@@ -112,7 +112,7 @@ int Max( int Lhs, int Rhs )
 /* Perform a rotate between a node (K2) and its left child */
 /* Update heights, then return new root */
 
-AVLNode SingleRotateWithLeft( AVLNode K2 )
+AVLNode SingleRotateToRight( AVLNode K2 )
 {
     AVLNode  K1;
 
@@ -131,7 +131,7 @@ AVLNode SingleRotateWithLeft( AVLNode K2 )
 /* Perform a rotate between a node (K1) and its right child */
 /* Update heights, then return new root */
 
-AVLNode SingleRotateWithRight( AVLNode K1 )
+AVLNode SingleRotateToLeft( AVLNode K1 )
 {
     AVLNode K2;
 
@@ -154,10 +154,10 @@ AVLNode SingleRotateWithRight( AVLNode K1 )
 AVLNode DoubleRotateWithLeft( AVLNode K3 )
 {
     /* Rotate between K1 and K2 */
-    K3->Left = SingleRotateWithRight( K3->Left );
+    K3->Left = SingleRotateToLeft( K3->Left );
 
     /* Rotate between K3 and K2 */
-    return SingleRotateWithLeft( K3 );
+    return SingleRotateToRight( K3 );
 }
 /* END */
 
@@ -169,10 +169,10 @@ AVLNode DoubleRotateWithLeft( AVLNode K3 )
 AVLNode DoubleRotateWithRight( AVLNode K1 )
 {
     /* Rotate between K3 and K2 */
-    K1->Right = SingleRotateWithLeft( K1->Right );
+    K1->Right = SingleRotateToRight( K1->Right );
 
     /* Rotate between K1 and K2 */
-    return SingleRotateWithRight( K1 );
+    return SingleRotateToLeft( K1 );
 }
 
 
@@ -197,7 +197,7 @@ AVLNode Insert( int X, AVLNode T )
         T->Left = Insert( X, T->Left );
         if( Height( T->Left ) - Height( T->Right ) == 2 )
             if( X < T->Left->Element )
-                T = SingleRotateWithLeft( T );
+                T = SingleRotateToRight( T );
             else
                 T = DoubleRotateWithLeft( T );
     }
@@ -206,7 +206,7 @@ AVLNode Insert( int X, AVLNode T )
         T->Right = Insert( X, T->Right );
         if( Height( T->Right ) - Height( T->Left ) == 2 )
             if( X > T->Right->Element )
-                T = SingleRotateWithRight( T );
+                T = SingleRotateToLeft( T );
             else
                 T = DoubleRotateWithRight( T );
     }
